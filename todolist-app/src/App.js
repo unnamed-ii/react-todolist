@@ -1,14 +1,14 @@
 import React, {useState} from "react";
 
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import './App.css';
 
 function App() {
     const [list, setList] = useState([])
     const [input, setInput] = useState('')
-    const [edit, setEdit] = useState({
-        id: null,
-        text: ''
-    })
+    const [editedInput, setEditedInput] = useState('')
+    const [edit, setEdit] = useState(null)
 
     const handleChangeInput = (e) => {
         setInput(e.target.value)
@@ -49,14 +49,45 @@ function App() {
         setList(updateList)
     }
 
+    const editTodo = (id) => {
+        setEdit(id)
+        setEditedInput('')
+    }
+
+    const handleChangeEditingInput = (e) => {
+        setEditedInput(e.target.value)
+    }
+
+    const submitEdit = (e) => {
+        e.preventDefault();
+
+        let updateList = list.map(i => {
+            if (i.id === edit) {
+                i.text = editedInput
+                console.log(1)
+            }
+            return i;
+        })
+        setList(updateList)
+        setEdit(null)
+    }
+
     return (
         <div className="todo">
             <div className="todo__inner">
                 <form className="todo__inner-form" onSubmit={addTodo}>
                     <h1>What's the Plan for Today?</h1>
                     <input type="text" onChange={handleChangeInput} value={input} placeholder="Add Todo"/>
-                    <button>Add Todo</button>
+                    <button className="todo__inner-form__add">Add Todo</button>
                 </form>
+                {edit &&
+                <form className="todo__inner-form" onSubmit={submitEdit}>
+                    <input className="edit-input" type="text" onChange={handleChangeEditingInput} value={editedInput}
+                           placeholder="Edit Todo"/>
+                    <button className="todo__inner-form__edit">Edit Todo</button>
+                </form>
+                }
+                {!edit &&
                 <div className="todo__inner-list">
                     {
                         list.map((i) => (
@@ -64,12 +95,13 @@ function App() {
                                 <div onClick={() => completeTodo(i.id)}>
                                     {i.text}
                                 </div>
-                                <button className="edit">Edit</button>
-                                <button className="delete" onClick={() => removeTodo(i.id)}>Delete</button>
+                                <ModeEditIcon className="edit" onClick={() => editTodo(i.id)}/>
+                                <HighlightOffIcon className="delete" onClick={() => removeTodo(i.id)}/>
                             </div>
                         ))
                     }
                 </div>
+                }
             </div>
         </div>
     );

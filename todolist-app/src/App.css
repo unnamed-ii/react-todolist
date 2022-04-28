@@ -51,7 +51,7 @@ body {
     color: #e2e2e2;
 }
 
-.todo__inner-form button {
+.todo__inner-form__add, .todo__inner-form__edit {
     padding: 16px;
     border: none;
     border-radius: 0 4px 4px 0;
@@ -64,6 +64,18 @@ body {
     );
     color: #fff;
     text-transform: capitalize;
+}
+
+.todo__inner-form__edit {
+    background: linear-gradient(
+            90deg,
+            rgba(20, 159, 255, 1) 0%,
+            rgba(17, 122, 255, 1) 100%
+    );
+}
+
+.todo__inner-form .edit-input {
+    border: 2px solid #149aff;
 }
 
 .todo__inner-list {
@@ -116,11 +128,13 @@ body {
 }
 
 .edit {
+    cursor: pointer;
     position: absolute;
-    right: 80px;
+    right: 50px;
 }
 
 .delete {
+    cursor: pointer;
     position: absolute;
     right: 20px;
 }
